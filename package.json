@@ -1,0 +1,16 @@
+{
+  "name": "com.umbrason.velocitycontroller",
+  "version": "1.0.0",
+  "displayName": "Velocity Controller",
+  "description": "Simplistic but powerful 2D/3D velocity controller with emergent properties arising from simple rules.",
+  "keywords": [
+    "Character Controller",
+    "2D",
+    "3D",
+    "Physics"
+  ],
+  "author": {
+    "name": "Umbrason"
+  },
+  "hideInEditor": false
+}
