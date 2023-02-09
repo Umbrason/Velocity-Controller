@@ -16,6 +16,7 @@ public class VelocityController : MonoBehaviour
         public VelocityChannelMask channelMask;
         public Func<float, float> speedCurve;
         public Vector3 direction;
+        public event Action OnCompleteActions;
 
         public Vector3 ChannelMaskVector { get => new(((int)channelMask & 0b001), ((int)channelMask & 0b010) >> 1, ((int)channelMask & 0b100) >> 2); }
 
@@ -28,6 +29,7 @@ public class VelocityController : MonoBehaviour
             this.blendMode = blendMode;
             this.speedCurve = speedCurve;
             this.channelMask = channelMask;
+            OnCompleteActions = () => {};
         }
         public MovementOverride(Vector3 direction,
                                 float constantSpeed,
@@ -38,6 +40,17 @@ public class VelocityController : MonoBehaviour
         public MovementOverride(Vector3 desiredVelocity,
                                 VelocityBlendMode blendMode = VelocityBlendMode.MaximumMagnitude,
                                 VelocityChannelMask channelMask = VelocityChannelMask.XYZ) : this(desiredVelocity.normalized, (t) => desiredVelocity.magnitude, blendMode, channelMask) { }
+        
+        public MovementOverride OnComplete(Action callback)
+        {
+            OnCompleteActions += callback;
+            return this;
+        }
+
+        public void Complete()
+        {
+            OnCompleteActions?.Invoke();
+        }
     }
 
     private struct MovementOverrideInstance
@@ -131,6 +144,8 @@ public class VelocityController : MonoBehaviour
             //filter out expired entries by checking normalized time
             var expired = movementOverrideInstances[priority].Where((movementOverrideInstance) =>
                     (Time.time - movementOverrideInstance.startTime) / movementOverrideInstance.duration >= 1f).ToList();
+            foreach (var expiredOverride in expired)
+                expiredOverride.movementOverride.Complete();
             movementOverrideInstances[priority] = movementOverrideInstances[priority].Except(expired).ToList();
         }
     }

@@ -59,11 +59,6 @@ public class VelocityController2D : MonoBehaviour
             this.startTime = startTime;
             this.duration = duration;
         }
-
-        public void CallComplete()
-        {
-            movementOverride.Complete();
-        }
     }
     private Dictionary<int, List<MovementOverrideInstance>> movementOverrideInstances = new Dictionary<int, List<MovementOverrideInstance>>();
 
@@ -139,7 +134,7 @@ public class VelocityController2D : MonoBehaviour
             var expired = movementOverrideInstances[priority].Where((movementOverrideInstance) =>
                     (Time.time - movementOverrideInstance.startTime) / movementOverrideInstance.duration >= 1f).ToList();
             foreach (var expiredOverride in expired)
-                expiredOverride.CallComplete();
+                expiredOverride.movementOverride.Complete();
             movementOverrideInstances[priority] = movementOverrideInstances[priority].Except(expired).ToList();
         }
     }
