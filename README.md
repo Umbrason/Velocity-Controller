@@ -3,7 +3,7 @@
 Velocity Controllers allow for complex behaviour to arise from blending 'Velocity Overrides'.
 Velocity Overrides can be animated over their lifetime and chained together using the onComplete callback.
 
-#Example
+# Examples
 
 simple 3D character controller:
 ```csharp
