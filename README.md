@@ -5,10 +5,10 @@ Velocity Overrides can be animated over their lifetime and chained together usin
 
 # Examples
 
-simple 3D character controller:
+Simple 3D character controller:
 ```csharp
 [SerializeField] private VelocityController vc;
-[SerializeField] private float jumpVelocity = 15f
+[SerializeField] private float jumpVelocity = 15f;
 
 [...]
 void FixedUpdate() {
@@ -19,4 +19,14 @@ void FixedUpdate() {
 }
 ```
 
+Wind effect:
+```csharp
+[SerializeField] private VelocityController vc;
+[SerializeField] private float windStrength = 15f;
+[SerializeField] private Vector3 windDirection = Vector3.right;
+
+void FixedUpdate() {
+  vc.AddOverwriteMovement(new(windDirection, windStrength, VelocityBlendMode.Additive, VelocityChannelMask.XYZ), 0f, 0);
+}
+```
 
